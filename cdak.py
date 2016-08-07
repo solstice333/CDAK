@@ -8,6 +8,10 @@ class CDAK:
       return ''.join([s for s in line.values()]) == ''
 
    @staticmethod
+   def _is_eof(line):
+      return line['Time(hh:mm:ss)'] == '~End'
+
+   @staticmethod
    def _get_blank(blk):
       blanks = [float(blk[0]['10']), float(blk[0]['11']), float(blk[0]['12'])]
       return float(sum(blanks)/len(blanks))
@@ -32,6 +36,8 @@ class CDAK:
       for line in self.cursor:
          if CDAK._is_all_values_are_empty(line):
             return CDAK._get_blank(self.blk)
+         elif CDAK._is_eof(line):
+            break
          self.blk.append(line)
       raise StopIteration
 
