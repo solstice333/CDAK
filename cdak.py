@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import csv
 import argparse
-import math
 
 class CDAK:
    @staticmethod
