@@ -16,6 +16,13 @@ class CDAK:
       blanks = [float(blk[0]['10']), float(blk[0]['11']), float(blk[0]['12'])]
       return float(sum(blanks)/len(blanks))
 
+   @staticmethod
+   def _convert_blk_to_mdim(blk):
+      mdim = []
+      for row in blk:
+         mdim.append([row[str(col)] for col in range(1, 13)])
+      return mdim
+
    def __init__(self, cdak_file):
       self.name = cdak_file
       self.file = open(self.name, 'r')
@@ -35,6 +42,7 @@ class CDAK:
 
       for line in self.cursor:
          if CDAK._is_all_values_are_empty(line):
+            mdim = CDAK._convert_blk_to_mdim(self.blk)
             return CDAK._get_blank(self.blk)
          elif CDAK._is_eof(line):
             break
