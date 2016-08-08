@@ -2,7 +2,7 @@
 
 ## Description
 
-Parses through Cathepsin D Assay Kinetics csv data and filters then transposes well groups in the following format, `<ABC 0.5 ug><ABC 1 ug><ABC 2 ug>`. Output goes to an output csv or stdout.
+Parses through Cathepsin D Assay Kinetics csv data and filters then transposes well groups in the following format, `<ABC 0.5 ug><ABC 1 ug><ABC 2 ug>`. Output goes to an output csv or stdout depending on config.ini specifications.
 
 ## Usage
 
