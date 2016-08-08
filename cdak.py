@@ -10,22 +10,15 @@ class ConfigParser:
    def get_groups(self):
       groups = [[]]
       group = 0
-      new_group = False
 
       with open(self.config_file, 'r') as configs:
          for line in configs:
             if re.match(r'\s*\n', line):
-               if new_group:
-                  continue
-               else:
-                  new_group = True
-                  group += 1
-                  groups.append([])
+               group += 1
+               groups.append([])
             elif re.match(r'\s*#', line):
                continue
             else:
-               new_group = False
-
                if re.match(r'\s*None\s*', line, re.I):
                   node = None
                else:
