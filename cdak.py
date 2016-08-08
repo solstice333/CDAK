@@ -14,6 +14,8 @@ class ConfigParser:
 
       with open(self.config_file, 'r') as configs:
          for line in configs:
+            line = re.sub(r'#.*$', '', line)
+
             if re.match(r'\s*#|\s*\n', line):
                continue
             else:
@@ -29,7 +31,8 @@ class ConfigParser:
                   pair = re.split(r'\s*,\s*', line)
                   if len(pair) != 2:
                      raise ValueError(
-                        "Error: Bad value '{}' in config file".format(line.rstrip()))
+                        "Error: Bad value '{}' in config file".format(
+                           line.rstrip()))
                   node = (int(pair[0]), int(pair[1].rstrip()))
 
                groups[filename].append(node)
@@ -74,7 +77,12 @@ class CDAK:
          return box 
 
       def get_diff(self):
-         return [str(float(self.box[row][col]) - self.blank) for col in range(CDAK.Fibro.WIDTH) for row in range(CDAK.Fibro.WIDTH)]
+         vals = []
+
+         for col in range(CDAK.Fibro.WIDTH): 
+            for row in range(CDAK.Fibro.WIDTH):
+               vals.append(str(float(self.box[row][col]) - self.blank))
+         return vals
 
       def __str__(self):
          return ','.join(self.get_diff())
@@ -111,15 +119,20 @@ class CDAK:
       self.file.close()
 
 def main():
-   parser = argparse.ArgumentParser(description="Cathepsin D Assay Kinetics data converter")
-   parser.add_argument('-c', '--config-file', required=True, help='path to config file')
+   parser = argparse.ArgumentParser(
+      description="Cathepsin D Assay Kinetics data converter")
+   parser.add_argument('-c', '--config-file', 
+      help='path to config file. Defaults to ./config.ini')
    parser.add_argument('CSV', help='path to input csv file to parse')
    args = parser.parse_args()
+
+   if not args.config_file:
+      args.config_file = 'config.ini'
 
    configs = ConfigParser(args.config_file).get_groups()
 
    for filename, group in configs.items():
-      if re.match(r'\s*stdout\s*$', filename, re.I):
+      if re.match(r'\s*stdout\d*$', filename, re.I):
          fh = sys.stdout
          closable = False
       else:
