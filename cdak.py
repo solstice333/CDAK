@@ -36,10 +36,7 @@ class ConfigParser:
                   node = (pair[0], pair[1].rstrip())
                groups[group].append(node)
 
-      if len(groups[-1]) == 0:
-         groups.pop()
-         
-      return groups
+      return [l for l in groups if len(l) != 0]
 
 class CDAK:
    @staticmethod
