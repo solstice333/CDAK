@@ -24,7 +24,11 @@ optional arguments:
 
 ```
 
-- BLANK must be in the three upper right corner wells
+- BLANK must be in the three upper right corner wells for each time block
+
+- The following header below is required at the top of the csv:
+
+   `Time(hh:mm:ss),Temperature(C),1,2,3,4,5,6,7,8,9,10,11,12`
 
 - config.ini must be in this format:
 
