@@ -164,7 +164,13 @@ None
 
 def main():
    parser = argparse.ArgumentParser(
-      description="Cathepsin D Assay Kinetics data converter")
+      description="Cathepsin D Assay Kinetics data converter. " +
+         "BLANK must be in the three upper right corner wells for each " +
+         "time block. The following header is required at the top of " +
+         "the input csv  -- " +
+         "\"Time(hh:mm:ss),Temperature(C),1,2,3,4,5,6,7,8,9,10,11,12\". " +
+         "config.ini must be in the format specified in the generated " +
+         "sample using -g.")
    parser.add_argument('-c', '--config-file', 
       help='specify a config file to use. Defaults to ./config.ini')
    parser.add_argument('CSV', nargs='?', 

@@ -9,7 +9,11 @@ Parses through Cathepsin D Assay Kinetics csv data and filters then transposes w
 ```
 usage: cdak.py [-h] [-c CONFIG_FILE] [-g [CONFIG_FILE]] [CSV]
 
-Cathepsin D Assay Kinetics data converter
+Cathepsin D Assay Kinetics data converter. BLANK must be in the three upper
+right corner wells for each time block. The following header is required at
+the top of the input csv --
+"Time(hh:mm:ss),Temperature(C),1,2,3,4,5,6,7,8,9,10,11,12". config.ini must be
+in the format specified in the generated sample using -g.
 
 positional arguments:
   CSV                   path to input csv file to parse
@@ -22,13 +26,8 @@ optional arguments:
                         generate a sample config file. Defaults to config.ini
                         if argument value is not given
 
+
 ```
-
-- BLANK must be in the three upper right corner wells for each time block
-
-- The following header below is required at the top of the csv:
-
-   `Time(hh:mm:ss),Temperature(C),1,2,3,4,5,6,7,8,9,10,11,12`
 
 - config.ini must be in this format:
 
