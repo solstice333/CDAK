@@ -53,10 +53,12 @@ class CDAK:
       return mdim
 
    class Fibro:
-      def __init__(self, config, blk):
+      WIDTH = 3
+      def __init__(self, config, blk, blank):
          self.cfig = config
          self.b = blk
          self.box = self.init_box()
+         self.blank = blank
 
       def init_box(self):
          box = [[],[],[]]
@@ -67,8 +69,11 @@ class CDAK:
             i = i + 1 if i < 2 else 0
          return box 
 
+      def get_diff(self):
+         return [str(float(self.box[row][col]) - self.blank) for col in range(CDAK.Fibro.WIDTH) for row in range(CDAK.Fibro.WIDTH)]
+
       def __str__(self):
-         return str(self.box)
+         return ','.join(self.get_diff())
 
    def __init__(self, cdak_file, config_file):
       self.name = cdak_file
@@ -91,8 +96,9 @@ class CDAK:
       for line in self.cursor:
          if CDAK._is_all_values_are_empty(line):
             mdim = CDAK._convert_blk_to_mdim(self.blk)
-            fibro = CDAK.Fibro(self.configs[0], mdim)
-            return CDAK._get_blank(self.blk)
+            avg = CDAK._get_blank(self.blk)
+            fibro = CDAK.Fibro(self.configs[0], mdim, avg)
+            return fibro
          elif CDAK._is_eof(line):
             break
          self.blk.append(line)
