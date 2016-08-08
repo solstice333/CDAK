@@ -78,14 +78,14 @@ class CDAK:
 
       def get_diff(self):
          vals = []
-
          for col in range(CDAK.Fibro.WIDTH): 
             for row in range(CDAK.Fibro.WIDTH):
-               vals.append(str(float(self.box[row][col]) - self.blank))
+               vals.append(str(float(self.box[row][col]) - self.blank) \
+                  if self.box[row][col] else None)
          return vals
 
       def __str__(self):
-         return ','.join(self.get_diff())
+         return ','.join(map(lambda d: d or '', self.get_diff()))
 
    def __init__(self, cdak_file, group):
       self.name = cdak_file
@@ -135,6 +135,7 @@ def main():
       if re.match(r'\s*stdout\d*$', filename, re.I):
          fh = sys.stdout
          closable = False
+         print("\n{}:".format(filename))
       else:
          fh = open(filename, 'w')
          closable = True
