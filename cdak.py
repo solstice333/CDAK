@@ -107,13 +107,9 @@ def main():
    parser.add_argument('CSV', help='path to csv file to parse')
    args = parser.parse_args()
 
-   # with CDAK(args.CSV, args.config_file) as cdak:
-   #    for line in cdak:
-   #       print(line)
-
-   configs = ConfigParser(args.config_file)
-   for c in configs.get_groups():
-      print(c)
+   with CDAK(args.CSV, args.config_file) as cdak:
+      for line in cdak:
+         print(line)
 
 
 if __name__ == '__main__':
