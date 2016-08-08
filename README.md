@@ -7,7 +7,7 @@ Parses through Cathepsin D Assay Kinetics csv data and filters then transposes w
 ## Usage
 
 ```
-usage: cdak.py [-h] [-c CONFIG_FILE] CSV
+usage: cdak.py [-h] [-c CONFIG_FILE] [-g [CONFIG_FILE]] [CSV]
 
 Cathepsin D Assay Kinetics data converter
 
@@ -17,7 +17,11 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -c CONFIG_FILE, --config-file CONFIG_FILE
-                        path to config file. Defaults to ./config.ini
+                        specify a config file to use. Defaults to ./config.ini
+  -g [CONFIG_FILE], --generate-config-file [CONFIG_FILE]
+                        generate a sample config file. Defaults to config.ini
+                        if argument value is not given
+
 ```
 
 - BLANK must be in the three upper right corner wells
@@ -62,5 +66,4 @@ None
 7,0
 7,1
 7,2
-
 ```
