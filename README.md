@@ -42,7 +42,7 @@ optional arguments:
 1, 6
 2, 6
 
-# 'stdout2' # print to stdout without overriding the previous stdout
+'stdout2' # print to stdout without overriding the previous stdout
 # required syntax below:
 1,9   # A, 0.5 ug
 2,9   # B, 0.5 ug
