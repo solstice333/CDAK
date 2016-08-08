@@ -118,13 +118,66 @@ class CDAK:
    def __exit__(self, exc_type, exc_value, traceback):
       self.file.close()
 
+def generate_config_file(filename):
+   template = \
+"""# comments ignored, newlines ignored
+
+'stdout' # print to stdout
+0, 0 # trailing comments allowed
+1, 0
+2, 0
+0, 3
+1, 3
+2, 3
+0, 6
+1, 6
+2, 6
+
+'stdout2' # print to stdout without overriding the previous stdout
+# required syntax below:
+1,9   # A, 0.5 ug
+2,9   # B, 0.5 ug
+3,9   # C, 0.5 ug
+
+4,9   # A, 1 ug
+5,9   # B, 1 ug
+6,9   # C, 1 ug
+
+6,0   # A, 2 ug
+6,1   # B, 2 ug
+6,2   # C, 2 ug
+
+'pep.csv' # write to a file called pep.csv
+None # None is an empty well and is ignored
+None
+None
+None
+None
+None
+7,0
+7,1
+7,2
+"""
+
+   with open(filename, 'w') as example:
+      example.write(template)
+
 def main():
    parser = argparse.ArgumentParser(
       description="Cathepsin D Assay Kinetics data converter")
    parser.add_argument('-c', '--config-file', 
-      help='path to config file. Defaults to ./config.ini')
-   parser.add_argument('CSV', help='path to input csv file to parse')
+      help='specify a config file to use. Defaults to ./config.ini')
+   parser.add_argument('CSV', nargs='?', 
+      help='path to input csv file to parse')
+   parser.add_argument('-g', '--generate-config-file',
+      nargs='?', const='config.ini', metavar='CONFIG_FILE',
+      help='generate a sample config file. ' + 
+         'Defaults to config.ini if argument value is not given')
    args = parser.parse_args()
+
+   if args.generate_config_file:
+      generate_config_file(args.generate_config_file)
+      exit(0)
 
    if not args.config_file:
       args.config_file = 'config.ini'
@@ -149,9 +202,3 @@ def main():
 
 if __name__ == '__main__':
    main()
-
-
-
-
-
-
