@@ -45,6 +45,24 @@ class CDAK:
          mdim.append([row[str(col)] for col in range(1, 13)])
       return mdim
 
+   class Fibro:
+      def __init__(self, config, blk):
+         self.cfig = config
+         self.b = blk
+         self.box = self.init_box()
+
+      def init_box(self):
+         box = [[],[],[]]
+         i = 0
+         for pair in self.cfig:
+            value = None if pair is None else self.b[int(pair[0])][int(pair[1])]
+            box[i].append(value)
+            i = i + 1 if i < 2 else 0
+         return box 
+
+      def __str__(self):
+         return str(self.box)
+
    def __init__(self, cdak_file, config_file):
       self.name = cdak_file
       self.file = open(self.name, 'r')
@@ -66,6 +84,7 @@ class CDAK:
       for line in self.cursor:
          if CDAK._is_all_values_are_empty(line):
             mdim = CDAK._convert_blk_to_mdim(self.blk)
+            fibro = CDAK.Fibro(self.configs[0], mdim)
             return CDAK._get_blank(self.blk)
          elif CDAK._is_eof(line):
             break
@@ -84,6 +103,7 @@ def main():
    with CDAK(args.CSV, args.config_file) as cdak:
       for line in cdak:
          print(line)
+
 
 if __name__ == '__main__':
    main()
