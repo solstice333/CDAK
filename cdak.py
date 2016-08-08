@@ -26,7 +26,7 @@ class ConfigParser:
                   if len(pair) != 2:
                      raise ValueError(
                         "Error: Bad value '{}' in config file".format(line.rstrip()))
-                  node = (pair[0], pair[1].rstrip())
+                  node = (int(pair[0]), int(pair[1].rstrip()))
                groups[group].append(node)
 
       return [l for l in groups if len(l) != 0]
