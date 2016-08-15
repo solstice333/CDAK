@@ -2,7 +2,7 @@
 
 ## Description
 
-Parses through Cathepsin D Assay Kinetics csv data and filters then transposes well groups in the following format, `<ABC 0.5 ug><ABC 1 ug><ABC 2 ug>`. Output goes to an output csv or stdout depending on config.ini specifications.
+Parses through Cathepsin D Assay Kinetics csv data and filters then transposes well groups in the following format, `<ABC x ug><ABC y ug><ABC z ug>`. Output goes to an output csv or stdout depending on config.ini specifications.
 
 ## Usage
 
@@ -29,14 +29,35 @@ optional arguments:
 
 ```
 
-- config.ini must be in this format:
+- config.ini must be in this format, empty newlines are ignored:
 
 ```
-# comments ignored, newlines ignored
+   'filename.csv or stdout[digit]'
+   row,col
+   row,col
+   row,col
+
+   row,col
+   row,col
+   row,col
+
+   row,col
+   row,col
+   row,col
+```
+
+- there cannot be more than 9 row, col pairs
+
+- `None` can be used to represent an empty well, but is not required
+
+- config.ini example:
+
+```
+# comments ignored, empty newlines ignored
 
 'stdout' # print to stdout
 0, 0 # trailing comments allowed
-1, 0
+1, 0 # row, col
 2, 0
 0, 3
 1, 3
@@ -69,4 +90,13 @@ None
 7,0
 7,1
 7,2
+```
+
+Mini tutorial:
+
+```
+$ cd path/to/CDAK   # change directory to CDAK
+$ ./cdak.py -g   # generate config.ini in current directory
+$ nano config.ini   # edit config.ini
+$ ./cdak.py input.csv   # run cdak
 ```
