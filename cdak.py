@@ -162,6 +162,32 @@ None
    with open(filename, 'w') as example:
       example.write(template)
 
+class FH:
+   def __init__(self, filename):
+      self._filename = filename
+
+      if re.match(r'\s*stdout\d*$', self._filename, re.I):
+         self._fh = sys.stdout
+         self._closable = False
+      else:
+         self._fh = open(self._filename, 'w')
+         self._closable = True
+
+   def __enter__(self):
+      return self
+
+   @property
+   def name(self):
+      return self._filename
+
+   @property
+   def handle(self):
+      return self._fh
+
+   def __exit__(self, exc_type, exc_value, traceback):
+      if self._closable:
+         self._fh.close()
+
 def main():
    parser = argparse.ArgumentParser(
       description="Cathepsin D Assay Kinetics data converter. " +
@@ -191,20 +217,13 @@ def main():
    configs = ConfigParser(args.config_file).get_groups()
 
    for filename, group in configs.items():
-      if re.match(r'\s*stdout\d*$', filename, re.I):
-         fh = sys.stdout
-         closable = False
-         print("\n{}:".format(filename))
-      else:
-         fh = open(filename, 'w')
-         closable = True
+      with FH(filename) as fh:
+         print("\n{}:".format(fh.name))
 
-      with CDAK(args.CSV, group) as cdak:
-         for line in cdak:
-            fh.write("{}\n".format(line))
+         with CDAK(args.CSV, group) as cdak:
+            for line in cdak:
+               fh.handle.write("{}\n".format(line))
 
-      if closable:
-         fh.close()
 
 if __name__ == '__main__':
    main()
