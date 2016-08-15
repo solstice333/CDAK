@@ -36,6 +36,15 @@ class ConfigParser:
                   node = (int(pair[0]), int(pair[1].rstrip()))
 
                groups[filename].append(node)
+
+         for group in groups.values():
+            assert not len(group) > 9, \
+               "Error: a valid group must be less than or equal to 9"
+
+            if len(group) < 9:
+               while len(group) != 9:
+                  group.append(None)
+
       return groups
 
 class CDAK:
