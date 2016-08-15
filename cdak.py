@@ -124,15 +124,21 @@ class CDAK:
    def __next__(self):
       self.blk = []
 
+      def extract_and_flush(blk):
+         mdim = CDAK._convert_blk_to_mdim(blk)
+         avg = CDAK._get_blank(blk)
+         mins = CDAK._get_mins_from_blk(blk)
+         return "{},{}".format(mins, CDAK.Fibro(self.group, mdim, avg))
+
       for line in self.cursor:
          if CDAK._is_all_values_are_empty(line):
-            mdim = CDAK._convert_blk_to_mdim(self.blk)
-            avg = CDAK._get_blank(self.blk)
-            mins = CDAK._get_mins_from_blk(self.blk)
-            return "{},{}".format(mins, CDAK.Fibro(self.group, mdim, avg))
+            return extract_and_flush(self.blk)
          elif CDAK._is_eof(line):
             break
          self.blk.append(line)
+      if len(self.blk):
+         return extract_and_flush(self.blk)
+         
       raise StopIteration
 
    def __exit__(self, exc_type, exc_value, traceback):
