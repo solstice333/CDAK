@@ -184,6 +184,10 @@ class FH:
    def handle(self):
       return self._fh
 
+   @property
+   def is_file(self):
+      return self._closable
+
    def __exit__(self, exc_type, exc_value, traceback):
       if self._closable:
          self._fh.close()
@@ -218,7 +222,8 @@ def main():
 
    for filename, group in configs.items():
       with FH(filename) as fh:
-         print("\n{}:".format(fh.name))
+         if not fh.is_file:
+            print("\n{}:".format(fh.name))
 
          with CDAK(args.CSV, group) as cdak:
             for line in cdak:
