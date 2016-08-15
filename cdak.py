@@ -59,6 +59,16 @@ class CDAK:
          mdim.append([row[str(col)] for col in range(1, 13)])
       return mdim
 
+   @staticmethod
+   def _get_mins_from_blk(blk):
+      mins = blk[0]['Time(hh:mm:ss)']
+      mins = mins.split(':')
+      mins = list(map(lambda val: int(val), mins))
+
+      if len(mins) == 3 and mins[0] < 24:
+         return mins[1] + mins[0]*60
+      return mins[0]
+
    class Fibro:
       WIDTH = 3
       def __init__(self, config, blk, blank):
@@ -109,7 +119,8 @@ class CDAK:
          if CDAK._is_all_values_are_empty(line):
             mdim = CDAK._convert_blk_to_mdim(self.blk)
             avg = CDAK._get_blank(self.blk)
-            return CDAK.Fibro(self.group, mdim, avg)
+            mins = CDAK._get_mins_from_blk(self.blk)
+            return "{},{}".format(mins, CDAK.Fibro(self.group, mdim, avg))
          elif CDAK._is_eof(line):
             break
          self.blk.append(line)
