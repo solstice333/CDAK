@@ -46,6 +46,8 @@ optional arguments:
    row,col
 ```
 
+- whitespace is ignored in the csv "row,col" lines, thus "row , col" or "row, col" is okay.
+
 - there cannot be more than 9 row, col pairs
 
 - `None` can be used to represent an empty well, but is not required
